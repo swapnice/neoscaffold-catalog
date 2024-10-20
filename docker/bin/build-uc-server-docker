@@ -11,12 +11,21 @@ image_tag=$container_name:$container_version
 echo "Changing directory to $project_dir"
 cd "$project_dir" || exit
 
+echo "Building $image_tag using the build definition from $docker_file"
+
+echo "UC_DB_URL: ${UC_DB_URL}"
+echo "POSTGRES_USER: ${POSTGRES_USER}"
+echo "POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}"
+
 if [[ -r "$docker_file" ]]; then
     echo "Building $image_tag using the build definition from $docker_file"
-    docker buildx build \
+    docker buildx build --platform linux/amd64 \
       --progress=plain \
       --no-cache \
       --build-arg unitycatalog_version="$container_version" \
+      --build-arg UC_DB_URL="${UC_DB_URL}" \
+      --build-arg POSTGRES_USER="${POSTGRES_USER}" \
+      --build-arg POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \
       --tag "$image_tag" \
       -f "$docker_file" .
 else

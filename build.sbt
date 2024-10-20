@@ -92,7 +92,7 @@ lazy val commonSettings = Seq(
     case DepModuleInfo("jakarta.transaction", "jakarta.transaction-api", _) => true
     case DepModuleInfo("javax.annotation", "javax.annotation-api", _) => true
   },
-  
+
   assembly / test := {}
 )
 
@@ -269,6 +269,9 @@ lazy val server = (project in file("server"))
 
       "com.google.code.findbugs" % "jsr305" % "3.0.2",
       "com.h2database" %  "h2" % "2.2.224",
+
+      // Add the PostgreSQL dependency here
+      "org.postgresql" % "postgresql" % "42.7.4",
 
       "org.hibernate.orm" % "hibernate-core" % "6.5.0.Final",
 
