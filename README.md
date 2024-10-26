@@ -268,3 +268,8 @@ Then serve the docs with
 ```sh
 mkdocs serve
 ```
+
+# TODO:
+
+setup auth for dev/prod for various user-level permissions
+consider making each account a schema
