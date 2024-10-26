@@ -8,18 +8,30 @@ ARG unitycatalog_bin="bin"
 ARG unitycatalog_user_name="unitycatalog"
 ARG unitycatalog_user_home="home"
 ARG unitycatalog_user_basedir="${unitycatalog_home}/${unitycatalog_user_home}"
+
 # Specify any custom parameters necessary to generate
-# the Uber-Jar by SBT. 
+# the Uber-Jar by SBT.
 # Note: The default allocated heam memory size is too small
 # and will cause the process to fail when attempting to compile
 # and generate the Uber-Jar. Therefore it is important to choose
-# a size large enough for the compiler to run. 
+# a size large enough for the compiler to run.
 ARG sbt_args="-J-Xmx2G"
 # FIXME Pass it from the outside
 ARG unitycatalog_version="0.2.0-SNAPSHOT"
 ARG jars_directory="server/target/jars"
 
 FROM eclipse-temurin:17-jdk-alpine AS package_server
+
+
+ARG UC_DB_URL
+ARG POSTGRES_USER
+ARG POSTGRES_PASSWORD
+
+# GET ENV SECRETS
+
+ENV UC_DB_URL $UC_DB_URL
+ENV POSTGRES_USER $POSTGRES_USER
+ENV POSTGRES_PASSWORD $POSTGRES_PASSWORD
 
 ARG unitycatalog_repo
 ARG sbt_args
@@ -29,7 +41,7 @@ ARG jars_directory
 RUN <<EOF
     set -ex;
     apk update;
-    apk upgrade; 
+    apk upgrade;
     apk add bash git;
     rm -R /var/cache/apk/*;
 EOF
@@ -67,7 +79,7 @@ EXPOSE 8080 8081
 RUN <<EOF
     set -ex;
     apk update;
-    apk upgrade; 
+    apk upgrade;
     apk add bash;
     rm -R /var/cache/apk/*;
 EOF
@@ -87,7 +99,7 @@ EOF
 
 # Create system group and user for Unity Catalog
 # Ensure the user created has their HOME pointing to the volume
-# created to persist user data and the sbt cached files that 
+# created to persist user data and the sbt cached files that
 # are created as a result of compiling the unity catalog.
 # This also ensures that the container can run independently from
 # the storage, so we can have ephemeral docker instances with --rm

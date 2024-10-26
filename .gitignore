@@ -42,3 +42,6 @@ __pycache__
 dist/
 *.egg-info/
 Pipfile
+
+/etc/conf/neoscaffold-*.json
+/etc/conf/hibernate.properties
