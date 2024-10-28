@@ -273,3 +273,5 @@ mkdocs serve
 
 setup auth for dev/prod for various user-level permissions
 consider making each account a schema
+
+add a way to add embeddings from some best practice approaches
